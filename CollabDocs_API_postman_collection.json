@@ -1,0 +1,600 @@
+{
+  "info": {
+    "_postman_id": "1f777201-7378-43e3-9ff3-0beea61a6e41",
+    "name": "CollabDocs API",
+    "description": "17 required CollabDocs endpoints. Set collection variables after creating a user, workspace, document, and tag.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "45152863",
+    "_collection_link": "https://go.postman.co/collection/45152863-1f777201-7378-43e3-9ff3-0beea61a6e41?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Create user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"collab_user\",\n  \"email\": \"collab_user@example.com\",\n  \"password\": \"ChangeMe123!\",\n  \"first_name\": \"Collab\",\n  \"last_name\": \"User\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                ""
+              ]
+            },
+            "description": "Save returned id as collection variable user_id."
+          },
+          "response": []
+        },
+        {
+          "name": "Get user by UUID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/{{user_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "{{user_id}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Workspaces",
+      "item": [
+        {
+          "name": "Create workspace",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Engineering Workspace\",\n  \"description\": \"CollabDocs demo workspace\",\n  \"owner\": \"{{user_id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/workspaces/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "workspaces",
+                ""
+              ]
+            },
+            "description": "Save returned id as workspace_id. Owner should be added as admin atomically."
+          },
+          "response": []
+        },
+        {
+          "name": "Get workspace by UUID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/workspaces/{{workspace_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "workspaces",
+                "{{workspace_id}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add workspace member",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user\": \"REPLACE_WITH_SECOND_USER_UUID\",\n  \"role\": \"editor\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/workspaces/{{workspace_id}}/members/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "workspaces",
+                "{{workspace_id}}",
+                "members",
+                ""
+              ]
+            },
+            "description": "Create a second user first if testing this request."
+          },
+          "response": []
+        },
+        {
+          "name": "List workspace members",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/workspaces/{{workspace_id}}/members/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "workspaces",
+                "{{workspace_id}}",
+                "members",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Workspace summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/workspaces/{{workspace_id}}/summary/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "workspaces",
+                "{{workspace_id}}",
+                "summary",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Documents",
+      "item": [
+        {
+          "name": "Create document",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"workspace\": \"{{workspace_id}}\",\n  \"title\": \"DRF Project Notes\",\n  \"content\": \"Initial document content.\",\n  \"status\": \"draft\",\n  \"created_by\": \"{{user_id}}\",\n  \"updated_by\": \"{{user_id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/documents/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "documents",
+                ""
+              ]
+            },
+            "description": "Save returned id as document_id. Expected to create version 1."
+          },
+          "response": []
+        },
+        {
+          "name": "Update document",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"workspace\": \"{{workspace_id}}\",\n  \"title\": \"DRF Project Notes\",\n  \"content\": \"Updated document content.\",\n  \"status\": \"published\",\n  \"created_by\": \"{{user_id}}\",\n  \"updated_by\": \"{{user_id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/documents/{{document_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "documents",
+                "{{document_id}}",
+                ""
+              ]
+            },
+            "description": "Expected to create the next version."
+          },
+          "response": []
+        },
+        {
+          "name": "List documents with filters",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/documents/?workspace={{workspace_id}}&search=DRF&status__in=draft,published",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "documents",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "workspace",
+                  "value": "{{workspace_id}}"
+                },
+                {
+                  "key": "search",
+                  "value": "DRF"
+                },
+                {
+                  "key": "status__in",
+                  "value": "draft,published"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Document version history",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/documents/{{document_id}}/versions/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "documents",
+                "{{document_id}}",
+                "versions",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Document statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/documents/{{document_id}}/stats/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "documents",
+                "{{document_id}}",
+                "stats",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Assign tags to document",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tag_ids\": [\n    \"{{tag_id}}\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/documents/{{document_id}}/tags/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "documents",
+                "{{document_id}}",
+                "tags",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Comments",
+      "item": [
+        {
+          "name": "Create top-level comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"document\": \"{{document_id}}\",\n  \"author\": \"{{user_id}}\",\n  \"content\": \"Please review this document.\",\n  \"parent\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/comments/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "comments",
+                ""
+              ]
+            },
+            "description": "Save returned id as comment_id."
+          },
+          "response": []
+        },
+        {
+          "name": "List comments for document",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/comments/?document={{document_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "comments",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "document",
+                  "value": "{{document_id}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Tags",
+      "item": [
+        {
+          "name": "Create tag",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"python\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/tags/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "tags",
+                ""
+              ]
+            },
+            "description": "Save returned id as tag_id."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Audit Logs",
+      "item": [
+        {
+          "name": "List audit logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/audit-logs/?model_name=Document",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "audit-logs",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "model_name",
+                  "value": "Document"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000"
+    },
+    {
+      "key": "user_id",
+      "value": "REPLACE_WITH_USER_UUID"
+    },
+    {
+      "key": "workspace_id",
+      "value": "REPLACE_WITH_WORKSPACE_UUID"
+    },
+    {
+      "key": "document_id",
+      "value": "REPLACE_WITH_DOCUMENT_UUID"
+    },
+    {
+      "key": "comment_id",
+      "value": "REPLACE_WITH_COMMENT_UUID"
+    },
+    {
+      "key": "tag_id",
+      "value": "REPLACE_WITH_TAG_UUID"
+    },
+    {
+      "key": "parent_comment_id",
+      "value": "REPLACE_WITH_PARENT_COMMENT_UUID"
+    }
+  ]
+}
