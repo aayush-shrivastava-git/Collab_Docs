@@ -16,8 +16,7 @@ API-only collaborative document backend built with Django REST Framework and Pos
 
 - Python 3.11+ (use the Python version installed in your environment)
 - Docker Desktop with Docker Compose
-- PostgreSQL container from `docker-compose.yml`
-- Dependencies from `requirements.txt`
+- Dependencies listed in `requirements.txt`
 
 ## Setup (Windows PowerShell)
 
@@ -34,7 +33,11 @@ API-only collaborative document backend built with Django REST Framework and Pos
    pip install -r requirements.txt
    ```
 
-3. Copy `.env.example` to `.env` and set a local password.
+3. Copy `env.example` to `.env` and set the local database credentials to match your configuration:
+
+   ```powershell
+   Copy-Item env.example .env
+   ```
 
 4. Start PostgreSQL:
 
@@ -62,50 +65,34 @@ API base URL: `http://127.0.0.1:8000/api/`
 
 Use these values when registering the Docker database in pgAdmin:
 
-- Host: `localhost`
-- Port: `5434`
-- Maintenance database: value of `DB_NAME`
-- Username: value of `DB_USER`
-- Password: value of `DB_PASSWORD`
+- **Host:** `localhost`
+- **Port:** `5434`
+- **Maintenance database:** value of `DB_NAME` in `.env`
+- **Username:** value of `DB_USER` in `.env`
+- **Password:** value of `DB_PASSWORD` in `.env`
 
 ## Postman
 
-Import `CollabDocs.postman_collection.json` into Postman. Set the collection variables `user_id`, `workspace_id`, `document_id`, and `tag_id` using UUIDs returned from successful create requests. Create a second user before testing **Add workspace member**.
+Import `CollabDocs_API_postman_collection.json` into Postman. Set the collection variables `user_id`, `workspace_id`, `document_id`, and `tag_id` to UUIDs returned from successful create requests. Create a second user and use that user's real UUID when testing **Add workspace member**.
 
-Recommended order:
-1. Create user
-2. Create workspace
-3. List workspace members and workspace summary
-4. Create a tag
-5. Create and update a document
-6. Assign tag, view versions and stats
-7. Create/list comments
-8. Inspect audit logs
-
-The collection includes 17 requests across the folders Users, Workspaces, Documents, Comments, Tags, and Audit Logs. Some requests depend on IDs returned by earlier requests.
+The collection contains 17 requests across Users, Workspaces, Documents, Comments, Tags, and Audit Logs. Some requests depend on IDs returned by earlier requests.
 
 ## Transaction rollback demonstration
 
-Run `python test_rollback.py` after creating a user and workspace. It deliberately raises an exception inside an atomic block and checks that the document, version, and signal-generated audit entry are absent afterward.
+Run the following after the local database is configured and the required user/workspace data is available:
 
-For the demo video, show the script, run it in the terminal, and explain that the intentional exception causes the database transaction to roll back.
+```powershell
+python test_rollback.py
+```
+
+The script deliberately raises an exception inside an atomic transaction and checks that the document, version, and signal-generated audit entry are absent afterward.
 
 ## Demo video
 
-Record a 5–10 minute walkthrough with audio showing:
-- Creating a user and workspace, and the owner membership.
-- Creating/updating a document and checking version history.
-- Audit log entries created by the document signal.
-- Workspace/document aggregation endpoints.
-- Request timing logs in the Django console.
-- The rollback demonstration.
+The demo video is submitted separately through the assignment submission portal.
 
-After recording, upload the video to Loom or Google Drive and replace this line with the share link:
+## Security notes
 
-**Demo video:** TODO — add Loom/Google Drive URL.
-
-## Security and submission notes
-
-- Do not commit `.env`; commit `.env.example` only.
-- Change example passwords before using the project outside local development.
-- The current API uses `AllowAny` to keep this assignment's Postman flow simple; it is not suitable for production without authentication and object-level permissions.
+- Do not commit `.env`; commit `env.example` only.
+- Use local/example credentials only and never publish real passwords or secrets.
+- The current API uses `AllowAny` to keep the assignment's Postman flow simple. Add authentication and object-level permissions before using it in production.
